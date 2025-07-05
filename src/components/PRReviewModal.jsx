@@ -1,22 +1,19 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Loader2, ChevronDown, ChevronUp, Bot } from 'lucide-react';
+import { Loader2, Bot } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const PRReviewModal = ({ prData }) => {
-  const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [expanded, setExpanded] = useState(false);
+  const navigate = useNavigate();
 
   const handleAnalyze = async () => {
     setLoading(true);
-    setExpanded(true);
     try {
-      const response = await axios.post('http://localhost:7777/api/analyze', {
-        prData
-      });
-      setAnalysis(response.data.result);
+      await axios.post('http://localhost:7777/api/analyze', { prData });
+      navigate(`/analyze/${prData.id}`);
     } catch (error) {
-      console.error('Error fetching AI analysis:', error);
+      console.error('Error analyzing PR:', error);
     } finally {
       setLoading(false);
     }
@@ -24,7 +21,6 @@ const PRReviewModal = ({ prData }) => {
 
   return (
     <div className="mt-4 space-y-3">
-      {/* Analyze Button */}
       <button
         onClick={handleAnalyze}
         disabled={loading}
@@ -42,38 +38,6 @@ const PRReviewModal = ({ prData }) => {
           </>
         )}
       </button>
-
-      {/* Toggle Collapse */}
-      {analysis && (
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="flex items-center gap-1 text-blue-400 text-sm hover:underline transition"
-        >
-          {expanded ? (
-            <>
-              <ChevronUp className="w-4 h-4" /> Hide Analysis
-            </>
-          ) : (
-            <>
-              <ChevronDown className="w-4 h-4" /> Show Analysis
-            </>
-          )}
-        </button>
-      )}
-
-      {/* Chat Bubble AI Output */}
-      {analysis && expanded && (
-        <div className="bg-zinc-900 border border-zinc-700 p-4 rounded-2xl max-h-72 overflow-y-auto space-y-2 transition-all text-sm">
-          {analysis.split('\n').map((line, idx) => (
-            <div
-              key={idx}
-              className="bg-purple-700 text-white px-4 py-2 rounded-2xl max-w-full w-fit"
-            >
-              {line.trim()}
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 };
