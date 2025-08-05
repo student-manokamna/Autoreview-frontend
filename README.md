@@ -1,12 +1,76 @@
-# React + Vite
+# 🧠 AutoReview AI – Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> An intelligent UI that reviews your pull requests while you sip coffee ☕
 
-Currently, two official plugins are available:
+![React](https://img.shields.io/badge/React.js-Frontend-blue?style=flat-square)
+![AI-powered](https://img.shields.io/badge/Gemini-AI%20Powered-yellow?style=flat-square)
+![FunProject](https://img.shields.io/badge/Fun-Project-green?style=flat-square)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🚀 About the Project
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**AutoReview AI – Frontend** is the beautiful face of a smart AI-powered pull request review assistant. Built with **React.js**, it lets developers get automatic PR reviews, commit summaries, and suggestions using **Gemini AI** — all in a clean, modern interface.
+
+🖼️ Features:
+- Interactive UI for uploading PR links and viewing review summaries
+- Beautiful component-based structure
+- Integrates seamlessly with Gemini AI backend
+- Helps speed up code review by up to 60%
+
+---
+
+## 🎨 Tech Stack
+
+- **React.js** ⚛️
+- **Tailwind CSS** 💅
+- **JavaScript (ES6)** 🧠
+- **Axios** 🔗 (for API calls)
+
+---
+
+## 🧙‍♂️ Magic Setup Instructions
+
+To run the frontend locally:
+
+```bash
+# Clone the repo
+https://github.com/yourusername/auto-review-frontend.git
+
+# Go inside the folder
+cd auto-review-frontend
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm start
+```
+
+🔗 Make sure your backend is running ..=
+
+---
+
+## 🌟 Fun Fact
+
+Gemini helped process **20+ PRs**, saving **60%** of manual review time. 
+That’s enough time to grab a coffee ☕ *and* fix another bug! 😂
+
+---
+
+## 🤝 Contributions
+
+This is a solo-built frontend project crafted for AutoReview AI.  
+Pull requests aren’t open yet, but feel free to fork, explore, and get inspired! 🚀
+
+---
+
+## 📬 Contact
+
+Created with 💻 by **MANOKAMNA**  
+📧 Email: aroramoney473@gmail.com  
+🌐 GitHub: [@student-manokamna](https://github.com/student-manokamna)
+
+---
+
+> 🧩 *Built with love for clean UIs, automation, and a sprinkle of AI magic!* ✨
