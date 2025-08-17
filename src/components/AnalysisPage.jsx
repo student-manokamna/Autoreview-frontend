@@ -29,6 +29,7 @@ const AnalysisPage = () => {
   const handleAnalyzeCommits = async () => {
     setLoadingCommits(true);
     try {
+      console.log("hi",prId)
       const res = await axios.get(`http://localhost:7777/api/analyze-commits/${prId}`);
       setCommitSummary(res.data.commitSummary);
     } catch (err) {

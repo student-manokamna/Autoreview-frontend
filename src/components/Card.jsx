@@ -5,11 +5,14 @@ import PRReviewModal from './PRReviewModal';
 const Card = () => {
   const [result, setResult] = useState([]);
   const [filtered, setFiltered] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [authorFilter, setAuthorFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
+  const [repoUrl, setRepoUrl] = useState('');
+  const [owner, setOwner] = useState('calcom');
+  const [repo, setRepo] = useState('cal.com');
   const perPage = 6;
   const [commits, setCommits] = useState({});
   const [openPRId, setOpenPRId] = useState(null);
@@ -32,20 +35,40 @@ const Card = () => {
     });
   };
 
-  useEffect(() => {
-    const fetchPRs = async () => {
-      try {
-        const response = await axios.get(
-          'http://localhost:7777/api/pull-requests?owner=calcom&repo=cal.com'
-        );
-        setResult(response.data);
-      } catch (error) {
-        console.error('Error fetching pull requests:', error);
-      } finally {
-        setLoading(false);
+  const fetchPRs = async (o, r) => {
+    if (!o || !r) return;
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `http://localhost:7777/api/pull-requests?owner=${o}&repo=${r}`
+      );
+      setResult(response.data);
+    } catch (error) {
+      console.error('Error fetching pull requests:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRepoFetch = () => {
+    try {
+      const match = repoUrl.match(/github\.com\/([^/]+)\/([^/]+)/);
+      if (match) {
+        const extractedOwner = match[1];
+        const extractedRepo = match[2].replace(/\.git$/, '');
+        setOwner(extractedOwner);
+        setRepo(extractedRepo);
+        fetchPRs(extractedOwner, extractedRepo);
+      } else {
+        alert('Invalid GitHub repo URL');
       }
-    };
-    fetchPRs();
+    } catch (e) {
+      console.error('Failed to parse repo URL:', e);
+    }
+  };
+
+  useEffect(() => {
+    fetchPRs(owner, repo);
   }, []);
 
   useEffect(() => {
@@ -83,6 +106,20 @@ const Card = () => {
       <h1 className="text-2xl font-semibold text-white mb-4">Pull Requests</h1>
 
       <div className="flex flex-wrap gap-3 mb-6">
+        <input
+          type="text"
+          placeholder="Paste GitHub repo URL..."
+          value={repoUrl}
+          onChange={(e) => setRepoUrl(e.target.value)}
+          className="px-3 py-2 rounded bg-zinc-900 text-white border border-zinc-600 w-80"
+        />
+        <button
+          onClick={handleRepoFetch}
+          className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+        >
+          Fetch PRs
+        </button>
+
         <input
           type="text"
           placeholder="Search by title..."
@@ -129,8 +166,7 @@ const Card = () => {
             return (
               <div
                 key={pr.id}
-             className="bg-zinc-800 border border-zinc-700 shadow-md rounded-xl p-5 w-[350px] text-white hover:scale-[1.02] hover:shadow-blue-600 transition-all duration-300 ease-in-out"
-
+                className="bg-zinc-800 border border-zinc-700 shadow-md rounded-xl p-5 w-[350px] text-white hover:scale-[1.02] hover:shadow-blue-600 transition-all duration-300 ease-in-out"
               >
                 <div className="flex items-center gap-3 mb-4">
                   <img
@@ -203,7 +239,7 @@ const Card = () => {
                         >
                           <div className="flex flex-col">
                             <a
-                              href={`https://github.com/calcom/cal.com/commit/${commit.sha}`}
+                              href={`https://github.com/${owner}/${repo}/commit/${commit.sha}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="text-blue-400 truncate max-w-[180px] hover:underline"
@@ -215,7 +251,9 @@ const Card = () => {
                             </span>
                             <span className="text-gray-500 text-[10px]">
                               {commit.commit.author.name} •{' '}
-                              {new Date(commit.commit.author.date).toLocaleString()}
+                              {new Date(
+                                commit.commit.author.date
+                              ).toLocaleString()}
                             </span>
                           </div>
                           <button
